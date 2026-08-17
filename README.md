@@ -1,4 +1,4 @@
-# merlin-mcp
+# merlin-perceval-mcp
 
 An [MCP](https://modelcontextprotocol.io) server that gives AI coding agents accurate,
 up-to-date knowledge of **[MerLin](https://merlinquantum.ai)** — Quandela's photonic
