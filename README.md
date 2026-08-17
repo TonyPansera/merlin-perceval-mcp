@@ -2,7 +2,7 @@
 
 An [MCP](https://modelcontextprotocol.io) server that gives AI coding agents accurate, up-to-date knowledge of **[MerLin](https://merlinquantum.ai)**, Quandela's photonic quantum machine learning framework for PyTorch, and **[Perceval](https://perceval.quandela.net/docs/)**, the photonic SDK it is built on.
 
-MerLin is young and moving fast, and it post-dates the training cutoff of most models. Left to itself an agent will invent plausible-looking `QuantumLayer` arguments that do not exist. This server replaces guessing with the real documentation, the real signatures and the real example notebooks.
+MerLin is young and moving fast, and it post-dates the training cutoff of most models. This server replaces guessing with the real documentation, the real signatures and the real example notebooks.
 
 ## Nothing is stored locally
 
@@ -27,7 +27,7 @@ Requires Python 3.10+. The only runtime dependencies are `mcp` and `httpx`. The 
 **Claude code**
 
 ```bash
-claude mcp add merlin -- .venv/bin/merlin-mcp
+claude mcp add merlin -- .venv/bin/merlin-perceval-mcp
 ```
 
 ## Tools
@@ -43,13 +43,11 @@ Every tool takes `library`, either `"merlin"` (the default) or `"perceval"`.
 | `get_source` | The library's actual source code, narrowed to one class or function. |
 | `list_examples` | The curated example gallery, with summaries and tags. |
 | `get_example` | An example notebook rendered as markdown with runnable code cells. |
-| `get_release_notes` | Recent upstream release notes — the best guide to what changed. |
+| `get_release_notes` | Recent upstream release notes, the best guide to what changed. |
 
 There is also a `docs://{library}/index` resource listing every documentation page, and a `merlin_quickstart` prompt that walks an agent through grounding its code in the docs.
 
-A typical session: `search_docs("angle encoding")` → `get_doc_page(...)` →
-`get_api_doc("QuantumLayer")` → `get_example("notebooks/FirstQuantumLayers")` → write code
-that actually runs.
+A typical session: `search_docs("angle encoding")` → `get_doc_page(...)` → `get_api_doc("QuantumLayer")` → `get_example("notebooks/FirstQuantumLayers")` → write code that actually runs.
 
 ## Configuration
 
