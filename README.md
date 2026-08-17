@@ -22,6 +22,14 @@ python -m venv .venv && .venv/bin/pip install -e .
 
 Requires Python 3.10+. The only runtime dependencies are `mcp` and `httpx`. The server never imports the libraries it documents.
 
+## Connect the mcp
+
+**Claude code**
+
+```bash
+claude mcp add merlin -- .venv/bin/merlin-mcp
+```
+
 ## Tools
 
 Every tool takes `library`, either `"merlin"` (the default) or `"perceval"`.
