@@ -1,65 +1,26 @@
 # merlin-perceval-mcp
 
-An [MCP](https://modelcontextprotocol.io) server that gives AI coding agents accurate,
-up-to-date knowledge of **[MerLin](https://merlinquantum.ai)** — Quandela's photonic
-quantum machine learning framework for PyTorch — and **[Perceval](https://perceval.quandela.net/docs/)**,
-the photonic SDK it is built on.
+An [MCP](https://modelcontextprotocol.io) server that gives AI coding agents accurate, up-to-date knowledge of **[MerLin](https://merlinquantum.ai)**, Quandela's photonic quantum machine learning framework for PyTorch, and **[Perceval](https://perceval.quandela.net/docs/)**, the photonic SDK it is built on.
 
-MerLin is young and moving fast, and it post-dates the training cutoff of most models.
-Left to itself an agent will invent plausible-looking `QuantumLayer` arguments that do not
-exist. This server replaces guessing with the real documentation, the real signatures and
-the real example notebooks.
+MerLin is young and moving fast, and it post-dates the training cutoff of most models. Left to itself an agent will invent plausible-looking `QuantumLayer` arguments that do not exist. This server replaces guessing with the real documentation, the real signatures and the real example notebooks.
 
 ## Nothing is stored locally
 
-The server ships **no vendored documentation** and writes **nothing to disk**. Every answer
-is fetched at call time from the published documentation sites, GitHub and PyPI, and cached
-only in memory for the life of the process.
+The server ships **no vendored documentation** and writes **nothing to disk**. Every answer is fetched at call time from the published documentation sites, GitHub and PyPI, and cached only in memory for the life of the process.
 
-It also does not hardcode a version. On each call it reads the docs landing page, follows the
-redirect that names the current version, and serves that. When MerLin 0.5 ships, this server
-serves 0.5 — no update, no re-index, no maintenance.
+It also does not hardcode a version. On each call it reads the docs landing page, follows the redirect that names the current version, and serves that. When MerLin 0.5 ships, this server serves 0.5 — no update, no re-index, no maintenance.
 
-That leaves exactly one failure mode: upstream changing how it publishes. A scheduled
-[canary workflow](.github/workflows/upstream-canary.yml) runs the live tests weekly and opens
-an issue if the published layout ever moves.
+That leaves exactly one failure mode: upstream changing how it publishes. A scheduled [canary workflow](.github/workflows/upstream-canary.yml) runs the live tests weekly and opens an issue if the published layout ever moves.
 
 ## Install
 
 ```bash
-git clone https://github.com/tonypansera/merlin-mcp.git
-cd merlin-mcp
+git clone https://github.com/TonyPansera/merlin-perceval-mcp.git
+cd merlin-perceval mcp
 python -m venv .venv && .venv/bin/pip install -e .
 ```
 
-Requires Python 3.10+. The only runtime dependencies are `mcp` and `httpx` — no PyTorch, no
-Perceval, nothing quantum. The server never imports the libraries it documents.
-
-## Connect it
-
-**Claude Code**
-
-```bash
-claude mcp add merlin -- /absolute/path/to/merlin-mcp/.venv/bin/merlin-mcp
-```
-
-**Claude Desktop / any client using `mcpServers` JSON**
-
-```json
-{
-  "mcpServers": {
-    "merlin": {
-      "command": "/absolute/path/to/merlin-mcp/.venv/bin/merlin-mcp"
-    }
-  }
-}
-```
-
-**Over HTTP instead of stdio**
-
-```bash
-merlin-mcp --transport streamable-http --port 8000
-```
+Requires Python 3.10+. The only runtime dependencies are `mcp` and `httpx`. The server never imports the libraries it documents.
 
 ## Tools
 
@@ -76,8 +37,7 @@ Every tool takes `library`, either `"merlin"` (the default) or `"perceval"`.
 | `get_example` | An example notebook rendered as markdown with runnable code cells. |
 | `get_release_notes` | Recent upstream release notes — the best guide to what changed. |
 
-There is also a `docs://{library}/index` resource listing every documentation page, and a
-`merlin_quickstart` prompt that walks an agent through grounding its code in the docs.
+There is also a `docs://{library}/index` resource listing every documentation page, and a `merlin_quickstart` prompt that walks an agent through grounding its code in the docs.
 
 A typical session: `search_docs("angle encoding")` → `get_doc_page(...)` →
 `get_api_doc("QuantumLayer")` → `get_example("notebooks/FirstQuantumLayers")` → write code
@@ -108,23 +68,18 @@ All optional.
 .venv/bin/ruff check . && .venv/bin/mypy
 ```
 
-The offline suite builds its upstream payloads in memory, so there are no recorded fixtures
-to keep in sync and it passes with the network unplugged.
+The offline suite builds its upstream payloads in memory, so there are no recorded fixtures to keep in sync and it passes with the network unplugged.
 
 ## How it works
 
-Both documentation sites are Sphinx builds, and Sphinx publishes everything needed to answer
-questions about a library without scraping a single rendered page:
+Both documentation sites are Sphinx builds, and Sphinx publishes everything needed to answer questions about a library without scraping a single rendered page:
 
 - `objects.inv` — a compressed index of every documented symbol and its URL.
 - `searchindex.js` — the complete inverted full-text index Sphinx builds for its own search box.
 - `_sources/<page>.rst.txt` — the untouched source of every page.
 
-Signatures come from parsing the real modules on GitHub with Python's `ast`, which is more
-faithful than rendered autodoc HTML. Adding another Sphinx-documented library is one entry in
-the registry in [`config.py`](src/merlin_mcp/config.py).
+Signatures come from parsing the real modules on GitHub with Python's `ast`, which is more faithful than rendered autodoc HTML. Adding another Sphinx-documented library is one entry in the registry in [`config.py`](src/merlin_mcp/config.py).
 
 ## License
 
-MIT. MerLin and Perceval are projects of [Quandela](https://www.quandela.com); this server is
-an independent client of their public documentation.
+MIT. MerLin and Perceval are projects of [Quandela](https://www.quandela.com), this server is an independent client of their public documentation.
