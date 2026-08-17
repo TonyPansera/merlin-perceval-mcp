@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: MerLin documentation
+    url: https://merlinquantum.ai
+    about: Questions about MerLin itself, rather than this server.
+  - name: MerLin issue tracker
+    url: https://github.com/merlinquantum/merlin/issues
+    about: Bugs in the MerLin library belong upstream.
+  - name: Perceval issue tracker
+    url: https://github.com/Quandela/Perceval/issues
+    about: Bugs in the Perceval SDK belong upstream.

@@ -1,0 +1,50 @@
+name: Bug report
+description: Something returned the wrong answer, or nothing at all
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If a tool returned stale or wrong library information, please include the tool call and
+        the result — that is usually enough to find the cause.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you called, and what came back.
+      placeholder: |
+        Called get_api_doc(symbol="QuantumLayer") and the signature was missing input_size.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: input
+    id: library
+    attributes:
+      label: Library and version
+      placeholder: merlin 0.4 (or perceval v1.2)
+
+  - type: input
+    id: server-version
+    attributes:
+      label: merlin-mcp version
+      placeholder: "0.1.0 (merlin-mcp --version)"
+
+  - type: input
+    id: client
+    attributes:
+      label: MCP client
+      placeholder: Claude Code, Claude Desktop, MCP Inspector, ...
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Relevant environment variables
+      description: Any MERLIN_MCP_* variables you have set.

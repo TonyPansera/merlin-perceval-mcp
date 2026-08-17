@@ -1,0 +1,83 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "merlin-mcp"
+version = "0.1.0"
+description = "MCP server exposing live MerLin and Perceval documentation, API reference, source code, and examples to AI agents"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "Tony Pansera", email = "tonypansera9@gmail.com" }]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "merlin",
+    "merlinquantum",
+    "perceval",
+    "quandela",
+    "quantum-machine-learning",
+    "photonics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Documentation",
+]
+dependencies = ["mcp>=2.0.0", "httpx>=0.27"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "respx>=0.21",
+    "ruff>=0.6",
+    "mypy>=1.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/tonypansera/merlin-mcp"
+Repository = "https://github.com/tonypansera/merlin-mcp"
+Issues = "https://github.com/tonypansera/merlin-mcp/issues"
+Changelog = "https://github.com/tonypansera/merlin-mcp/blob/main/CHANGELOG.md"
+
+[project.scripts]
+merlin-mcp = "merlin_mcp.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/merlin_mcp"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+packages = ["merlin_mcp"]
+mypy_path = "src"
+strict = false
+warn_unused_ignores = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-m 'not network'"
+markers = [
+    "network: test performs real network requests against upstream docs sites (deselected by default)",
+]

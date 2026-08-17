@@ -1,0 +1,39 @@
+name: Feature request
+description: Suggest a new tool, argument, or supported library
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do
+      description: Describe the task an agent could not complete with the current tools.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      options:
+        - New tool
+        - New argument on an existing tool
+        - Support another library
+        - Output formatting
+        - Other
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Design constraints
+      description: This project stores nothing on disk and hardcodes no versions.
+      options:
+        - label: My proposal can be served by fetching from the web at call time
